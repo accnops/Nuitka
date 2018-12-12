@@ -21,10 +21,10 @@
 
 #if _NUITKA_PROFILE
 
-timespec diff(timespec start, timespec end);
+struct timespec diff(struct timespec start, struct timespec end);
 
-static timespec getTimespecDiff(timespec start, timespec end) {
-    timespec temp;
+static struct timespec getTimespecDiff(struct timespec start, struct timespec end) {
+    struct timespec temp;
 
     if ((end.tv_nsec - start.tv_nsec) < 0) {
         temp.tv_sec = end.tv_sec - start.tv_sec - 1;
@@ -40,7 +40,7 @@ static timespec getTimespecDiff(timespec start, timespec end) {
 static FILE *tempfile_profile;
 static PyObject *vmprof_module;
 
-static timespec time1, time2;
+static struct timespec time1, time2;
 
 void startProfiling(void) {
     tempfile_profile = fopen("nuitka-performance.dat", "wb");
@@ -85,7 +85,7 @@ void stopProfiling(void) {
 
     FILE *tempfile_times = fopen("nuitka-times.dat", "wb");
 
-    timespec diff = getTimespecDiff(time1, time2);
+    struct timespec diff = getTimespecDiff(time1, time2);
 
     long delta_ns = diff.tv_sec * 1000000000 + diff.tv_nsec;
     fprintf(tempfile_times, "%ld\n", delta_ns);
